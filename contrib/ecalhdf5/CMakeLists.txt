@@ -58,7 +58,12 @@ set(ecalhdf5_header_base
     include/ecalhdf5/eh5_types.h   
 )
 
+if (WIN32)
+# This library, ecal::hdf5 does not export any symbols on Windows. Must be static
+ecal_add_static_library(${PROJECT_NAME} ${ecalhdf5_src} ${ecalhdf5_header_base})
+else()
 ecal_add_library(${PROJECT_NAME} ${ecalhdf5_src} ${ecalhdf5_header_base})
+endif()
 add_library(eCAL::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME}

@@ -20,8 +20,6 @@ project(core VERSION ${eCAL_VERSION_STRING})
 
 find_package(Threads      REQUIRED)
 find_package(asio         REQUIRED)
-find_package(tclap        REQUIRED)
-find_package(simpleini    REQUIRED)
 find_package(tcp_pubsub   REQUIRED)
 if (ECAL_NPCAP_SUPPORT)
   find_package(udpcap REQUIRED)
@@ -501,13 +499,19 @@ target_link_libraries(${PROJECT_NAME}
     $<$<BOOL:${WIN32}>:wsock32>
     $<$<BOOL:${QNXNTO}>:socket>
     asio::asio
-    tclap::tclap
-    simpleini::simpleini
     eCAL::core_pb
     Threads::Threads
     eCAL::ecal-utils
     tcp_pubsub::tcp_pubsub
 )
+
+# tclap is header only and only used for implementation
+find_path(TCLAP_INCLUDE_DIRS "tclap/Arg.h")
+target_include_directories(${PROJECT_NAME}  PRIVATE ${TCLAP_INCLUDE_DIRS})
+
+# simpleini is header only and only used for implementation
+find_path(SIMPLEINI_INCLUDE_DIRS "ConvertUTF.c")
+target_include_directories(${PROJECT_NAME} PRIVATE ${SIMPLEINI_INCLUDE_DIRS})
 
 set_property(TARGET ${PROJECT_NAME}   PROPERTY FOLDER ecal/core)
 set_property(TARGET ${PROJECT_NAME}_c PROPERTY FOLDER ecal/core)

@@ -27,7 +27,8 @@ endif (POLICY CMP0077)
 
 list(APPEND CMAKE_MODULE_PATH
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
+  # Removed project specific Module overrides
+)
 
 project(eCAL)
 set(ECAL_PROJECT_ROOT "${CMAKE_CURRENT_LIST_DIR}")
@@ -209,11 +210,13 @@ foreach (dep IN LISTS possible_subprojects)
   endif ()
 endforeach()
 
+if(NOT DISABLE_FIND_PACKAGE_OVERLOAD)
 macro(find_package)
   if(NOT "${ARGV0}" IN_LIST as_subproject)
     _find_package(${ARGV})
   endif()
 endmacro()
+endif()
 
 # if a package does need to be build, include the cmake file with build instructions
 foreach (dep IN LISTS possible_subprojects)
@@ -229,7 +232,7 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_OLD}")
 endif()
 
-find_package(CMakeFunctions REQUIRED)
+# find_package(CMakeFunctions REQUIRED)
 
 git_revision_information(DEFAULT ${ECAL_BUILD_VERSION})
 set(eCAL_VERSION_MAJOR  ${GIT_REVISION_MAJOR})
@@ -327,7 +330,9 @@ add_subdirectory(ecal/core)
 # custom libs
 # --------------------------------------------------------
 add_subdirectory(lib/ThreadingUtils)
-add_subdirectory(lib/CustomTclap)
+# Removed due to only being used by the apps, which are disabled, and for
+# publicly linking tclap::tclap which doesn't exist outside of eCAL
+# add_subdirectory(lib/CustomTclap)
 add_subdirectory(lib/ecal_utils)
 
 if(HAS_QT5)
@@ -540,7 +545,9 @@ endif()
 # --------------------------------------------------------
 # create package
 # --------------------------------------------------------
+if(CPACK_PACK_WITH_INNOSETUP)
 include(cpack/cpack_variables.cmake)
+endif()
 
 message(STATUS "Build Options:")
 message(STATUS "--------------------------------------------------------------------------------")

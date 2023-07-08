@@ -40,4 +40,6 @@ foreach (f ${file_list})
   install( FILES ${f} DESTINATION "${cmake_functions_install_cmake_dir}/${dir}" )
 endforeach()
 
+if(CPACK_PACK_WITH_INNOSETUP)
 include(cmake/cpack_variables.cmake)
+endif()

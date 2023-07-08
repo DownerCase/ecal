@@ -37,7 +37,12 @@ set(ecal_protobuf_header
     include/ecal/protobuf/ecal_proto_visitor.h
 )
 
+if (WIN32)
+# This library, ecal::proto does not export any symbols on Windows. Must be static
+ecal_add_static_library(${PROJECT_NAME} ${ecal_protobuf_src} ${ecal_protobuf_header})
+else()
 ecal_add_library(${PROJECT_NAME} ${ecal_protobuf_src} ${ecal_protobuf_header})
+endif()
 add_library(eCAL::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME} PUBLIC 
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
