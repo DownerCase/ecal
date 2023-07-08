@@ -348,8 +348,10 @@ endif(HAS_QT5)
 # --------------------------------------------------------
 # ecal rec addon sdk
 # --------------------------------------------------------
+if (DBUILD_APPS)
 add_subdirectory(app/rec/rec_addon_core)
 add_subdirectory(app/rec/rec_addon_dummy)
+endif()
 
 # --------------------------------------------------------
 # ecal time
