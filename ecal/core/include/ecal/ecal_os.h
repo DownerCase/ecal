@@ -47,7 +47,7 @@
 #define ECAL_OS_FREEBSD
 #endif
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && defined(eCAL_SHARED_LIB)
   #ifdef eCAL_EXPORTS
     #define ECALC_API __declspec(dllexport)
   #else /* eCAL_EXPORTS */
@@ -64,11 +64,15 @@
 #endif
 
 #ifdef _MSC_VER
+  #ifdef eCAL_SHARED_LIB
   #ifdef eCAL_EXPORTS
     #define ECALC_API_DEPRECATED __declspec(dllexport deprecated)
   #else /* eCAL_EXPORTS */
     #define ECALC_API_DEPRECATED __declspec(dllimport deprecated)
   #endif /* eCAL_EXPORTS */
+  #else
+    #define ECALC_API_DEPRECATED  
+  #endif
 #elif defined(__GNUC__) || defined(__clang__)
   #define ECALC_API_DEPRECATED __attribute__((deprecated))
 #else

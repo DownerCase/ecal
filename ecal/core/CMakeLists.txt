@@ -400,7 +400,7 @@ set(ecal_header_base
     ${ecal_header_msg}
 )
 
-ecal_add_ecal_shared_library(${PROJECT_NAME} 
+ecal_add_library(${PROJECT_NAME} 
     ${ecal_custom_tclap_cpp_src}
     ${ecal_io_cpp_src} 
     ${ecal_io_mem_cpp_src} 
@@ -436,7 +436,7 @@ if(UNIX)
   set_source_files_properties(src/convert_utf.cpp PROPERTIES COMPILE_FLAGS -Wno-implicit-fallthrough)
 endif()
 
-ecal_add_ecal_shared_library(${PROJECT_NAME}_c ${ecal_c_src} ${ecal_c_win_src})
+ecal_add_library(${PROJECT_NAME}_c ${ecal_c_src} ${ecal_c_win_src})
 
 add_library(eCAL::${PROJECT_NAME}   ALIAS ${PROJECT_NAME})
 add_library(eCAL::${PROJECT_NAME}_c ALIAS ${PROJECT_NAME}_c)
@@ -444,7 +444,6 @@ add_library(eCAL::${PROJECT_NAME}_c ALIAS ${PROJECT_NAME}_c)
 target_link_libraries(${PROJECT_NAME}_c ${PROJECT_NAME})
 
 target_compile_definitions(${PROJECT_NAME}_c
-  INTERFACE ECAL_C_DLL
   PUBLIC
     ASIO_STANDALONE
     ASIO_DISABLE_VISIBILITY
@@ -459,6 +458,11 @@ target_compile_definitions(${PROJECT_NAME}
     $<$<BOOL:${ECAL_HAS_CLOCKLOCK_MUTEX}>:ECAL_HAS_CLOCKLOCK_MUTEX>
     $<$<BOOL:${ECAL_HAS_ROBUST_MUTEX}>:ECAL_HAS_ROBUST_MUTEX>
     $<$<BOOL:${ECAL_USE_CLOCKLOCK_MUTEX}>:ECAL_USE_CLOCKLOCK_MUTEX>)
+
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(${PROJECT_NAME}_c PUBLIC eCAL_SHARED_LIB)
+  target_compile_definitions(${PROJECT_NAME}   PUBLIC eCAL_SHARED_LIB)
+endif()
 
 if(ECAL_LAYER_ICEORYX)
   find_package(iceoryx_posh REQUIRED)
@@ -516,8 +520,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${SIMPLEINI_INCLUDE_DIRS})
 set_property(TARGET ${PROJECT_NAME}   PROPERTY FOLDER ecal/core)
 set_property(TARGET ${PROJECT_NAME}_c PROPERTY FOLDER ecal/core)
 
-ecal_install_ecal_shared_library(${PROJECT_NAME}_c)
-ecal_install_ecal_shared_library(${PROJECT_NAME})
+ecal_install_ecal_library(${PROJECT_NAME}_c)
+ecal_install_ecal_library(${PROJECT_NAME})
 
 install(DIRECTORY
    "include/" DESTINATION "${INSTALL_INCLUDE_DIR}" COMPONENT sdk
