@@ -556,6 +556,12 @@ add_library(eCAL::${PROJECT_NAME}_c ALIAS ${PROJECT_NAME}_c)
 
 target_link_libraries(${PROJECT_NAME}_c ${PROJECT_NAME})
 
+set_target_properties(${PROJECT_NAME} ${PROJECT_NAME}_c PROPERTIES
+  CXX_VISIBILITY_PRESET "hidden" # Don't export symbols by default
+  C_VISIBILITY_PRESET "hidden"
+  VISIBILITY_INLINES_HIDDEN ON
+)
+
 target_compile_definitions(${PROJECT_NAME}_c
   INTERFACE ECAL_C_DLL
   PUBLIC
