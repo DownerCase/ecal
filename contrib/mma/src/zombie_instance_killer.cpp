@@ -1,6 +1,6 @@
 /* ========================= eCAL LICENSE =================================
  *
- * Copyright (C) 2016 - 2019 Continental Corporation
+ * Copyright (C) 2016 - 2025 Continental Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -124,20 +124,20 @@ bool ZombieInstanceKiller::KillZombie(const std::string& pid_name)
     char buf[512];
     if (fgets(buf, 512, pipe) == nullptr) return false;
 
-    std::list<std::string> pids;
+    std::list<std::string> process_ids;
     char* pch;
     pch = strtok(buf, " ");
     while (pch != nullptr)
     {
-      pids.push_back(pch);
+      process_ids.push_back(pch);
       pch = strtok(nullptr, " ");
     }
 
-    if (!pids.empty())
+    if (!process_ids.empty())
     {
-      for (const auto& pid : pids)
+      for (const auto& process_id : process_ids)
       {
-        pid_t current_pid = strtoul(pid.c_str(), nullptr, 10);
+        pid_t current_pid = strtoul(process_id.c_str(), nullptr, 10);
 
         if ((current_pid != 0) && (current_pid != getpid()))
         {

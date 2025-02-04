@@ -58,14 +58,14 @@ namespace
   // we could also think about an update function here
   // e.g. we don't always copy everything, but only write if things have changed. At least this would be beneficial for performance.
   template<typename Service>
-  eCAL::ServiceMethodInfoSetT Convert(const Service& service_)
+  eCAL::ServiceMethodInformationSetT Convert(const Service& service_)
   {
-    eCAL::ServiceMethodInfoSetT methods;
+    eCAL::ServiceMethodInformationSetT methods;
     for (const auto& method : service_.methods)
     {
-      const eCAL::SDataTypeInformation request_datatype = GetDataTypeInformation(method.req_datatype, method.req_type, method.req_desc);
-      const eCAL::SDataTypeInformation response_datatype = GetDataTypeInformation(method.resp_datatype, method.resp_type, method.resp_desc);
-      methods.insert(eCAL::SServiceMethodInformation{method.mname, request_datatype, response_datatype });
+      const eCAL::SDataTypeInformation request_datatype = GetDataTypeInformation(method.request_datatype_information, method.req_type, method.req_desc);
+      const eCAL::SDataTypeInformation response_datatype = GetDataTypeInformation(method.response_datatype_information, method.resp_type, method.resp_desc);
+      methods.insert(eCAL::SServiceMethodInformation{method.method_name, request_datatype, response_datatype });
     }
     return methods;
   }
@@ -140,7 +140,7 @@ namespace
     const eCAL::Registration::SampleIdentifier& service_id_,
     const Service& service_)
   {
-    const auto service_method_info_key = eCAL::SServiceId{ ConvertToEntityId(service_id_), service_.sname };
+    const auto service_method_info_key = eCAL::SServiceId{ ConvertToEntityId(service_id_), service_.service_name };
 
     const std::lock_guard<std::mutex> lock(service_method_info_map_.mtx);
     service_method_info_map_.id_map[service_method_info_key] = Convert(service_);
@@ -151,7 +151,7 @@ namespace
     const eCAL::Registration::SampleIdentifier& service_id_,
     const Service& service_)
   {
-    const auto service_method_info_key = eCAL::SServiceId{ ConvertToEntityId(service_id_),  service_.sname };
+    const auto service_method_info_key = eCAL::SServiceId{ ConvertToEntityId(service_id_),  service_.service_name };
 
     const std::lock_guard<std::mutex> lock(service_method_info_map_.mtx);
     service_method_info_map_.id_map.erase(service_method_info_key);
@@ -220,7 +220,7 @@ namespace eCAL
     return GetServiceIDs(m_service_info_map);
   }
 
-  bool CDescGate::GetServerInfo(const SServiceId& id_, ServiceMethodInfoSetT& service_info_) const
+  bool CDescGate::GetServerInfo(const SServiceId& id_, ServiceMethodInformationSetT& service_info_) const
   {
     return GetService(id_, m_service_info_map, service_info_);
   }
@@ -230,7 +230,7 @@ namespace eCAL
     return GetServiceIDs(m_client_info_map);
   }
 
-  bool CDescGate::GetClientInfo(const SServiceId& id_, ServiceMethodInfoSetT& service_info_) const
+  bool CDescGate::GetClientInfo(const SServiceId& id_, ServiceMethodInformationSetT& service_info_) const
   {
     return GetService(id_, m_client_info_map, service_info_);
   }
@@ -274,7 +274,7 @@ namespace eCAL
     return service_id_set;
   }
 
-  bool CDescGate::GetService(const SServiceId& id_, const SServiceIdInfoMap& service_method_info_map_, ServiceMethodInfoSetT& service_method_info_)
+  bool CDescGate::GetService(const SServiceId& id_, const SServiceIdInfoMap& service_method_info_map_, ServiceMethodInformationSetT& service_method_info_)
   {
     const std::lock_guard<std::mutex> lock(service_method_info_map_.mtx);
     auto iter = service_method_info_map_.id_map.find(id_);
@@ -311,16 +311,16 @@ namespace eCAL
       RemServiceDescription(m_client_info_map, sample_.identifier, sample_.client);
       break;
     case bct_reg_publisher:
-      ApplyTopicDescription(m_publisher_info_map, m_publisher_callback_map, sample_.identifier, sample_.topic.tname, sample_.topic.tdatatype);
+      ApplyTopicDescription(m_publisher_info_map, m_publisher_callback_map, sample_.identifier, sample_.topic.topic_name, sample_.topic.datatype_information);
       break;
     case bct_unreg_publisher:
-      RemTopicDescription(m_publisher_info_map, m_publisher_callback_map, sample_.identifier, sample_.topic.tname);
+      RemTopicDescription(m_publisher_info_map, m_publisher_callback_map, sample_.identifier, sample_.topic.topic_name);
       break;
     case bct_reg_subscriber:
-      ApplyTopicDescription(m_subscriber_info_map, m_subscriber_callback_map, sample_.identifier, sample_.topic.tname, sample_.topic.tdatatype);
+      ApplyTopicDescription(m_subscriber_info_map, m_subscriber_callback_map, sample_.identifier, sample_.topic.topic_name, sample_.topic.datatype_information);
       break;
     case bct_unreg_subscriber:
-      RemTopicDescription(m_subscriber_info_map, m_subscriber_callback_map, sample_.identifier, sample_.topic.tname);
+      RemTopicDescription(m_subscriber_info_map, m_subscriber_callback_map, sample_.identifier, sample_.topic.topic_name);
       break;
     default:
     {

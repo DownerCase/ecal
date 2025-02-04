@@ -17,12 +17,16 @@
  * ========================= eCAL LICENSE =================================
 */
 
+/**
+ * @file   config.h
+ * @brief  eCAL configuration access
+**/
+
 #pragma once
 
 #include <cstddef>
 #include <ecal/log_level.h>
 #include <ecal/os.h>
-#include <ecal/tlayer.h>
 #include "ecal/config/configuration.h"
 
 #include <string>
@@ -71,7 +75,7 @@ namespace eCAL
     ECAL_API size_t                   GetTcpPubsubWriterThreadpoolSize     ();
     ECAL_API int                      GetTcpPubsubMaxReconnectionAttemps   ();
 
-    ECAL_API std::string              GetShmTransportDomain                     ();
+    ECAL_API std::string              GetShmTransportDomain                ();
 
     /////////////////////////////////////
     // time
@@ -91,13 +95,6 @@ namespace eCAL
     /////////////////////////////////////
 
     ECAL_API std::string              GetEcalSysFilterExcludeList          ();
-
-    /////////////////////////////////////
-    // publisher
-    /////////////////////////////////////
-    
-    ECAL_API bool                     IsTopicTypeSharingEnabled            ();
-    ECAL_API bool                     IsTopicDescriptionSharingEnabled     ();
     
     /////////////////////////////////////
     // subscriber

@@ -538,10 +538,10 @@ set(ecal_header_cmn
     include/ecal/service/client_instance.h
     include/ecal/service/server.h
     include/ecal/service/types.h
+    include/ecal/types/custom_data_types.h
     include/ecal/types/logging.h
     include/ecal/types/monitoring.h
     include/ecal/ecal.h
-    include/ecal/callback.h
     include/ecal/v5/ecal_callback.h
     include/ecal/v5/ecal_client.h
     include/ecal/config.h
@@ -561,15 +561,8 @@ set(ecal_header_cmn
     include/ecal/v5/ecal_subscriber.h
     include/ecal/time.h
     include/ecal/timer.h
-    include/ecal/tlayer.h
     include/ecal/types.h
     include/ecal/util.h
-)
-
-set(ecal_header_msg
-    include/ecal/msg/dynamic.h
-    include/ecal/msg/publisher.h
-    include/ecal/msg/subscriber.h
 )
 
 set(ecal_sources
@@ -597,7 +590,6 @@ set(ecal_sources
     ${ecal_cmn_src}
     ${ecal_builder_src}
     ${ecal_header_cmn}
-    ${ecal_header_msg}
 )
 
 ecal_add_shared_library(${TARGET_NAME}
@@ -733,25 +725,37 @@ endif()
 endmacro()
 
 #######################################
-# CHANGE: Removed v5 compat
+# We now create two libraries
+# One of them is a compatibility version that should facilitate easier migration.
+# ecal_core, ecal_core_v5.
+# We removed again the compatibility libraries.
+# We might reintroduce it, but then for *ALL* functionality.
 #######################################
 
 add_ecal_core_library(${PROJECT_NAME})
-target_compile_definitions(${PROJECT_NAME}
-  PUBLIC 
-    ECAL_CORE_V5_FUNCTIONALTIY=0
-)
+
+#target_compile_definitions(${PROJECT_NAME}
+#  PUBLIC 
+#    ECAL_CORE_V5_FUNCTIONALTIY=1
+#)
+
+#add_ecal_core_library(core_v5)
+#target_compile_definitions(core_v5 
+#  PUBLIC
+#    ECAL_CORE_NAMESPACE_V5_INLINE=1
+#    ECAL_CORE_V5_FUNCTIONALTIY=1
+#)
 
 ###
 ## Iinstall header files only once...
 ## 
 install(DIRECTORY
-   "include/" DESTINATION "${INSTALL_INCLUDE_DIR}" COMPONENT sdk
+   "include/" DESTINATION "${eCAL_install_include_dir}" COMPONENT sdk
     FILES_MATCHING PATTERN "*.h")
 
 # install generated defs.h file    
 install(DIRECTORY
-   "${CMAKE_CURRENT_BINARY_DIR}/include/" DESTINATION "${INSTALL_INCLUDE_DIR}" COMPONENT sdk
+   "${CMAKE_CURRENT_BINARY_DIR}/include/" DESTINATION "${eCAL_install_include_dir}" COMPONENT sdk
     FILES_MATCHING PATTERN "*.h")
 
 # eCAL process stub

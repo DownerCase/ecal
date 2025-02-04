@@ -145,7 +145,7 @@ We support building on currently supported Ubuntu LTS releases.
 |fa-ubuntu| Ubuntu 22.04 / 20.04 build
 --------------------------------------
 
-#. Compile eCAL with the following options (additional set `BUILD_PY_BINDING` to `ON` if plan to build the python extension):
+#. Compile eCAL with the following options (additional set `ECAL_BUILD_PY_BINDING` to `ON` if plan to build the python extension):
 
    .. code-block:: bash
 
@@ -162,9 +162,12 @@ We support building on currently supported Ubuntu LTS releases.
       sudo dpkg -i _deploy/eCAL-*
       sudo ldconfig
 
-#. Optional: Create and install the eCAL python wheel (Only available if you enabled the `BUILD_PY_BINDING` CMake option in step 1):
+#. Optional: Create and install the eCAL python wheel (Only available if you enabled the `ECAL_BUILD_PY_BINDING` CMake option in step 1):
 
    .. code-block:: bash
 
-      cmake --build . --target create_python_wheel --config Release
-      sudo pip3 install _deploy/ecal5-*
+      pip install wheel
+      pip install -r ../doc/requirements.txt
+      python -m pip install build
+      python -m build .. --outdir _deploy
+      sudo pip install _deploy/ecal5-*
