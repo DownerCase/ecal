@@ -119,6 +119,7 @@ jobs:
       shell: cmd
 
     - name: CMake Complete
+      id: cmake-configure
       run: |
         CALL "${{ runner.workspace }}\.venv\Scripts\activate.bat"
         cd "${{ runner.workspace }}/_build/complete"
