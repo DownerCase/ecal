@@ -149,7 +149,7 @@ jobs:
         -DCMAKE_PREFIX_PATH="%ProgramFiles%/Cap'n Proto/lib/cmake/CapnProto" ^
         -DCMAKE_BUILD_TYPE=Release ^
         -DCMAKE_CONFIGURATION_TYPES=Release ^
-        -DECAL_CPACK_PACK_WITH_INNOSETUP=ON        
+        -DECAL_CPACK_PACK_WITH_INNOSETUP=ON
       shell: cmd
 
     - name: Build SDK
@@ -167,6 +167,7 @@ jobs:
         cache-dir: ${{ github.workspace }}/.ccache
       # Always save cache if configure succeeded (even if the build failed)
       if: ${{ always() && steps.cmake-configure.outcome == 'success' }}
+
     - name: Run Tests
       run: ctest -C Release -V
       working-directory: ${{ runner.workspace }}/_build/complete
@@ -310,7 +311,7 @@ jobs:
               Write-Output "    ** determination of the new build number failed after $COUNTER_LIMIT tries" 
               Exit 1
           }
-          
+
           $RESPONSE = Invoke-WebRequest -Uri $QUEUE_URL
           $RES_CODE = $RESPONSE.StatusCode
           Write-Output "    ++ build number retrieval - HTTP status code: $RES_CODE"
@@ -357,7 +358,7 @@ jobs:
                   Break
                 } else {
                   Write-Output "    ** build failure"
-                  Exit 1        
+                  Exit 1
                 }
               }
             } else {
