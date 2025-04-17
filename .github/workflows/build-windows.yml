@@ -27,9 +27,15 @@ jobs:
         archives: 'qtbase qtsvg'
         cache: 'true'
 
-    - name: Install Dependencies
+    - name: Install Doxygen
       # Pin to latest doxygen version.
-      run: choco install doxygen.install --version=1.13.2 ccache --version=4.11.2
+      run: choco install doxygen.install --version=1.13.2
+
+    - name: Install ccache
+      run: choco install ccache --version=4.11.2
+
+    - name: Uninstall Chocolatey
+      run: move "$env:PROGRAMDATA\chocolatey" "$env:PROGRAMDATA\_chocolatey"
 
     - name: Checkout
       uses: actions/checkout@v4
