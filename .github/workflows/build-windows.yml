@@ -63,6 +63,14 @@ jobs:
 
       shell: cmd
 
+    - name: Prepare ccache and restore cache
+      id: ccache_cache-restore
+      uses: ./.github/actions/ccache-prepare
+      with:
+        key-root: ${{ matrix.os }}
+        cache-dir: ${{ github.workspace }}/.ccache
+
+
     - name: CMake SDK
       run: |
         mkdir "${{ runner.workspace }}\_build\sdk\"
@@ -149,7 +157,14 @@ jobs:
     - name: Build Release
       run: cmake --build . --config Release
       working-directory: ${{ runner.workspace }}/_build/complete
-    
+
+    - name: Save ccache cache to GitHub
+      uses: ./.github/actions/ccache-save
+      with:
+        key: ${{steps.ccache_cache-restore.outputs.cache-primary-key}}
+        cache-dir: ${{ github.workspace }}/.ccache
+      # Always save cache if configure succeeded (even if the build failed)
+      if: ${{ always() && steps.cmake-configure.outcome == 'success' }}
     - name: Run Tests
       run: ctest -C Release -V
       working-directory: ${{ runner.workspace }}/_build/complete
