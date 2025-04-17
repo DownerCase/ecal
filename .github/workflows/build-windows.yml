@@ -29,10 +29,7 @@ jobs:
 
     - name: Install Dependencies
       # Pin to latest doxygen version.
-      run: choco install doxygen.install --version=1.13.2
-
-    - name: Uninstall Chocolatey
-      run: move "$env:PROGRAMDATA\chocolatey" "$env:PROGRAMDATA\_chocolatey"
+      run: winget install -e -id=Ccache.Ccache -id=DimitriVanHeesch.Doxygen
 
     - name: Checkout
       uses: actions/checkout@v4
