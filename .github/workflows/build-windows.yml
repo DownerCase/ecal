@@ -108,6 +108,7 @@ jobs:
         -DBUILD_SHARED_LIBS=OFF ^
         -DCMAKE_PREFIX_PATH="%ProgramFiles%/Cap'n Proto/lib/cmake/CapnProto" ^
         -DCMAKE_BUILD_TYPE=Debug ^
+        -DCMAKE_CONFIGURATION_TYPES=Debug ^
         -DECAL_CPACK_PACK_WITH_INNOSETUP=OFF
       shell: cmd
 
@@ -147,6 +148,7 @@ jobs:
         -DBUILD_SHARED_LIBS=OFF ^
         -DCMAKE_PREFIX_PATH="%ProgramFiles%/Cap'n Proto/lib/cmake/CapnProto" ^
         -DCMAKE_BUILD_TYPE=Release ^
+        -DCMAKE_CONFIGURATION_TYPES=Release ^
         -DECAL_CPACK_PACK_WITH_INNOSETUP=ON        
       shell: cmd
 
