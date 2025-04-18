@@ -34,9 +34,6 @@ jobs:
     - name: Install ccache
       run: choco install ccache --version=4.11.2
 
-    - name: Uninstall Chocolatey
-      run: move "$env:PROGRAMDATA\chocolatey" "$env:PROGRAMDATA\_chocolatey"
-
     - name: Checkout
       uses: actions/checkout@v4
       with:
