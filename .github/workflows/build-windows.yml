@@ -73,12 +73,16 @@ jobs:
         key-root: windows-2019
         cache-dir: ${{ github.workspace }}/.ccache
 
+    - name: Setup MSVC toolchain
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+        toolset: 14.29
 
     - name: CMake SDK
       run: |
         mkdir "${{ runner.workspace }}\_build\sdk\"
         cd "${{ runner.workspace }}/_build/sdk"
-        call "C:\Program Files\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 -vcvars_ver=14.29
         cmake %GITHUB_WORKSPACE% -G "Ninja" ^
         -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl ^
         -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=cmake/submodule_dependencies.cmake ^
@@ -123,7 +127,6 @@ jobs:
       id: cmake-configure
       run: |
         CALL "${{ runner.workspace }}\.venv\Scripts\activate.bat"
-        call "C:\Program Files\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 -vcvars_ver=14.29
         cd "${{ runner.workspace }}/_build/complete"
         cmake %GITHUB_WORKSPACE% -G "Ninja" ^
         -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl ^
