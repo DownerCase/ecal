@@ -15,13 +15,12 @@ runs:
   steps:
 
     - name: Clear old cache entries
-      run: ccache --evict-older-than 3600s
-      shell: bash
-
-    - name: Show stats, then zero
       run: |
         ccache --show-stats
+        ccache --evict-older-than 3600s
+        ccache --show-stats
         ccache --zero-stats
+        ccache --show-stats
       shell: bash
 
     - name: Save ccache cache
