@@ -17,5 +17,5 @@ set_property(TARGET ecaludp PROPERTY FOLDER thirdparty/ecaludp)
 # ecaludp delay loads wpcap.dll and Ninja does not implicitly link delayimp.lib
 # unlike the Visual Studio generators
 if(ECALUDP_ENABLE_NPCAP AND ECALUDP_LIBRARY_TYPE STREQUAL STATIC)
-  target_link_libraries(ecaludp PUBLIC delayimp.lib)
+  target_link_options(ecaludp PUBLIC delayimp.lib)
 endif()
