@@ -17,6 +17,7 @@
 # ========================= eCAL LICENSE =================================
 
 # C# build, can be executed standalone against an eCAL installation
+cmake_minimum_required(VERSION 3.15)
 project(ecal_csharp)
 
 include(GNUInstallDirs)

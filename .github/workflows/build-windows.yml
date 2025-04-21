@@ -187,7 +187,7 @@ jobs:
       # TODO: C# bindings
     - name: Build C# bindings
       run: |
-        cmake --install "${{ runner.workspace }}/_build/complete" --prefix "${ runner.workspace }}/_install/complete"
+        cmake --install "${{ runner.workspace }}/_build/complete" --prefix "${{ runner.workspace }}/_install/complete"
 
         cmake -S lang/csharp -B _build/csharp -G "Visual Studio 16 2019" -A x64 -T v142 ^
         -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl ^
