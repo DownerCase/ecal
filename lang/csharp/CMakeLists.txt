@@ -67,3 +67,5 @@ if (ECAL_CSHARP_BUILD_SAMPLES OR ECAL_CSHARP_BUILD_TESTS)
 #Contains the person.proto which are being compiled to cs files
 add_subdirectory(Eclipse.eCAL.Protobuf.Samples.Datatypes)
 endif()
+
+include(CPack)
