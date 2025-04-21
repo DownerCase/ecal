@@ -52,6 +52,7 @@ add_subdirectory(Eclipse.eCAL.Protobuf.Datatypes)
 add_subdirectory(Eclipse.eCAL.String)
 
 if (ECAL_CSHARP_BUILD_TESTS)
+enable_testing()
 add_subdirectory(Eclipse.eCAL.Core.Test)
 add_subdirectory(Eclipse.eCAL.Protobuf.Test)
 endif()

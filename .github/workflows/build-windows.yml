@@ -189,7 +189,7 @@ jobs:
       run: |
         cmake --install "${{ runner.workspace }}/_build/complete" --prefix "${{ runner.workspace }}/_install/complete"
 
-        cmake -S lang/csharp -B _build/csharp -G "Visual Studio 16 2019" -A x64 -T v142 ^
+        cmake -S lang/csharp -B "${{ runner.workspace }}/_build/csharp" -G "Visual Studio 16 2019" -A x64 -T v142 ^
         -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl ^
         -DBUILD_SHARED_LIBS=OFF ^
         -DCMAKE_PREFIX_PATH="${{ runner.workspace }}/_install/complete" ^
@@ -200,7 +200,7 @@ jobs:
       shell: cmd
 
     - name: Run C# Tests
-      run: ctest -C Release -V --test-dir _build/csharp
+      run: ctest -C Release -V --test-dir "${{ runner.workspace }}/_build/csharp"
 
     - name: Package C#
       run: cpack -C Release -G External
