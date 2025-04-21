@@ -128,8 +128,7 @@ jobs:
     - name: CMake Complete
       id: cmake-configure
       run: |
-        cd "${{ runner.workspace }}/_build/complete"
-        cmake %GITHUB_WORKSPACE% -G "Ninja" ^
+        cmake -S . -B %GITHUB_WORKSPACE%/_build/complete -G "Ninja" ^
         -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl ^
         -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=cmake/submodule_dependencies.cmake ^
         -DECAL_USE_HDF5=ON ^
