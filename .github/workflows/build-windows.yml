@@ -197,6 +197,8 @@ jobs:
         -DCMAKE_CONFIGURATION_TYPES=Release ^
         -DECAL_CSHARP_BUILD_SAMPLES=ON ^
         -DECAL_CSHARP_BUILD_TESTS=ON
+
+        cmake --build "${{ runner.workspace }}/_build/csharp" --config Release
       shell: cmd
 
     - name: Run C# Tests
