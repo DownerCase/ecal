@@ -228,7 +228,7 @@ jobs:
         echo "BINARY_NAME=$BINARY_NAME" >> "$Env:GITHUB_ENV"
 
     - name: Package C# Bindings
-      run: cpack -C Release -G External -P ecal -R ${{ env.CPACK_VERSION }}
+      run: cpack -C Release -G External -V -R ${{ env.CPACK_VERSION }}
       working-directory: ${{ runner.workspace }}/_build/csharp
 
     - name: Build SDK

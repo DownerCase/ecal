@@ -74,4 +74,9 @@ if (ECAL_CSHARP_BUILD_SAMPLES OR ECAL_CSHARP_BUILD_TESTS)
 add_subdirectory(Eclipse.eCAL.Protobuf.Samples.Datatypes)
 endif()
 
+if(WIN32)
+  set(CPACK_GENERATOR "External")
+  set(CPACK_EXTERNAL_ENABLE_STAGING ON)
+endif()
+SET(CPACK_OUTPUT_FILE_PREFIX _deploy) # WARN: Undocumented, should use CPACK_PACKAGE_DIRECTORY
 include(CPack)
