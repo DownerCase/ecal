@@ -185,10 +185,14 @@ jobs:
     #   working-directory: ${{ runner.workspace }}/_build/complete
 
       # TODO: C# bindings
-    - name: Build C# bindings
+    - name: Create eCAL install tree for for C# bindings
       run: |
-        cmake --install "${{ runner.workspace }}/_build/complete" --prefix "${{ runner.workspace }}/_install/complete"
+        cmake --install "${{ runner.workspace }}/_build/complete" ^
+        --prefix "${{ runner.workspace }}/_install/complete"
+      shell: cmd
 
+    - name: Configure C# bindings
+      run: |
         cmake -S lang/csharp -B "${{ runner.workspace }}/_build/csharp" -G "Visual Studio 16 2019" -A x64 -T v142 ^
         -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl ^
         -DBUILD_SHARED_LIBS=OFF ^
@@ -196,15 +200,19 @@ jobs:
         -DCMAKE_BUILD_TYPE=Release ^
         -DCMAKE_CONFIGURATION_TYPES=Release ^
         -DECAL_CSHARP_BUILD_SAMPLES=ON ^
-        -DECAL_CSHARP_BUILD_TESTS=ON
+        -DECAL_CSHARP_BUILD_TESTS=ON ^
+        -DECAL_PROJECT_ROOT="${{ github.workspace }}"
+      shell: cmd
 
+    - name: Build C# bindings
+      run: |
         cmake --build "${{ runner.workspace }}/_build/csharp" --config Release
       shell: cmd
 
     - name: Run C# Tests
       run: ctest -C Release -V --test-dir "${{ runner.workspace }}/_build/csharp"
 
-    - name: Package C#
+    - name: Package C# Bindings
       run: cpack -C Release -G External
       working-directory: ${{ runner.workspace }}/_build/csharp
 
