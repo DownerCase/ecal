@@ -212,22 +212,6 @@ jobs:
     - name: Run C# Tests
       run: ctest -C Release -V --test-dir "${{ runner.workspace }}/_build/csharp"
 
-    - name: Package C# Bindings
-      run: cpack -C Release -G External
-      working-directory: ${{ runner.workspace }}/_build/csharp
-
-    - name: Build SDK
-      run: cmake --build . --config Debug
-      working-directory: ${{ runner.workspace }}/_build/sdk
-
-    - name: Pack SDK
-      run: cpack -C Debug
-      working-directory: ${{ runner.workspace }}/_build/sdk
-
-    - name: Pack complete setup
-      run: cpack -C Release
-      working-directory: ${{ runner.workspace }}/_build/complete
-
     - name: Get Project version from git tag
       shell: powershell
       run: |
@@ -236,14 +220,28 @@ jobs:
 
         #remove the leading 'v' from the tag, if it exists
         $VERSION = $VERSION -replace '^v', ''
-        
-        echo "VERSION=$VERSION" >> "$Env:GITHUB_ENV"
 
-    - name: Set output binary name
-      shell: powershell
-      run: |
-        $BINARY_NAME = "ecal_${{ env.VERSION }}-win64"
+        echo "VERSION=$VERSION" >> "$Env:GITHUB_ENV"
+        $CPACK_VERSION = "$VERSION-win64"
+        echo "CPACK_VERSION=$CPACK_VERSION" >> "$Env:GITHUB_ENV"
+        $BINARY_NAME = "ecal_$CPACK_VERSION"
         echo "BINARY_NAME=$BINARY_NAME" >> "$Env:GITHUB_ENV"
+
+    - name: Package C# Bindings
+      run: cpack -C Release -G External -P ecal -R ${{ env.CPACK_VERSION }}
+      working-directory: ${{ runner.workspace }}/_build/csharp
+
+    - name: Build SDK
+      run: cmake --build . --config Debug
+      working-directory: ${{ runner.workspace }}/_build/sdk
+
+    - name: Pack SDK
+      run: cpack -C Debug -R ${{ env.CPACK_VERSION }}
+      working-directory: ${{ runner.workspace }}/_build/sdk
+
+    - name: Pack complete setup
+      run: cpack -C Release -R ${{ env.CPACK_VERSION }}
+      working-directory: ${{ runner.workspace }}/_build/complete
 
     - name: Rename the setup exe
       shell: powershell
