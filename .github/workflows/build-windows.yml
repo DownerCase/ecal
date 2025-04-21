@@ -185,6 +185,28 @@ jobs:
       run: ctest -C Release -V
       working-directory: ${{ runner.workspace }}/_build/complete
 
+      # TODO: C# bindings
+    - name: Build C# bindings
+      run: |
+        cmake --install _build/complete --prefix "${ runner.workspace }}/_install/complete"
+
+        cmake -S . -B _build/csharp -G "Visual Studio 16 2019" -A x64 -T v142 ^
+        -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl ^
+        -DBUILD_SHARED_LIBS=OFF ^
+        -DCMAKE_PREFIX_PATH="${ runner.workspace }}/_install/complete" ^
+        -DCMAKE_BUILD_TYPE=Release ^
+        -DCMAKE_CONFIGURATION_TYPES=Release ^
+        -DECAL_CSHARP_BUILD_SAMPLES=ON ^
+        -DECAL_CSHARP_BUILD_TESTS=ON
+      shell: cmd
+
+    - name: Run C# Tests
+      run: ctest -C Release -V --test-dir _build/csharp
+
+    - name: Package C#
+      run: cpack -C Release -G External
+      working-directory: ${{ runner.workspace }}/_build/csharp
+
     - name: Pack SDK
       run: cpack -C Debug
       working-directory: ${{ runner.workspace }}/_build/sdk

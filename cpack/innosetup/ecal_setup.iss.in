@@ -26,6 +26,7 @@
 #define OutputName              str("ecal-")+str(AppVersion)+str("-win64")
 #define ComponentStagingDir     "@CPACK_TEMPORARY_INSTALL_DIRECTORY@"
 #define DebugSdkStagingDir      StringChange(ComponentStagingDir, "/complete/", "/sdk/")
+#define CSharpStagingDir        StringChange(ComponentStagingDir, "/complete/", "/csharp/")
 #define OutputDir               "@CPACK_PACKAGE_DIRECTORY@/@CPACK_OUTPUT_FILE_PREFIX@"
 #define LicenseFile             "@CPACK_RESOURCE_FILE_LICENSE@"
 
@@ -85,6 +86,8 @@ Source: "{#ComponentStagingDir}\_configuration\etc\ecal.yaml";    DestDir: "{app
 Source: "{#ComponentStagingDir}\_configuration\etc\ecal.yaml";    DestDir: "{app}\etc\"; Tasks: replaceconf;     Flags: ignoreversion skipifsourcedoesntexist;                  Components: runtime
 Source: "{#ComponentStagingDir}\_configuration\etc\ecaltime.yaml"; DestDir: "{app}\etc\";                         Flags: ignoreversion skipifsourcedoesntexist;                  Components: runtime
 
+Source: "{#CSharpStagingDir}\runtime\*";              DestDir: "{app}";      Flags: ignoreversion recursesubdirs; Components: runtime
+
 ; applications
 Source: "{#ComponentStagingDir}\app\*";               DestDir: "{app}";                   Flags: ignoreversion recursesubdirs;     Components: applications
 
@@ -105,6 +108,8 @@ Source: "{#DebugSdkStagingDir}\app\*";                DestDir: "{app}";         
 
 ;Source: "{#DebugSdkStagingDir}\headers\*";           DestDir: "{app}";                   Flags: ignoreversion recursesubdirs;     Components: sdk\ecal
 Source: "{#DebugSdkStagingDir}\sdk\*";                DestDir: "{app}";                   Flags: ignoreversion recursesubdirs;     Components: sdk\ecal
+
+Source: "{#CSharpStagingDir}\sdk\*";                  DestDir: "{app}";                   Flags: ignoreversion recursesubdirs;     Components: sdk\ecal
 
 ; sdk\protobuf
 Source: "{#ComponentStagingDir}\libprotobuf\*";       DestDir: "{app}";                   Flags: ignoreversion recursesubdirs;     Components: sdk\protobuf

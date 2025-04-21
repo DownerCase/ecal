@@ -16,11 +16,9 @@ runs:
 
     - name: Clear old cache entries
       run: |
-        ccache --show-stats
         ccache --evict-older-than 3600s
         ccache --show-stats
         ccache --zero-stats
-        ccache --show-stats
       shell: bash
 
     - name: Save ccache cache
