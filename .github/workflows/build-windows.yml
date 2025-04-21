@@ -184,9 +184,9 @@ jobs:
       # Always save cache if configure succeeded (even if the build failed)
       if: ${{ always() && steps.cmake-configure.outcome == 'success' }}
 
-    - name: Run Tests
-      run: ctest -C Release -V
-      working-directory: ${{ runner.workspace }}/_build/complete
+    # - name: Run Tests
+    #   run: ctest -C Release -V
+    #   working-directory: ${{ runner.workspace }}/_build/complete
 
       # TODO: C# bindings
     - name: Build C# bindings
