@@ -26,7 +26,7 @@
 #define OutputName              str("ecal-")+str(AppVersion)+str("-win64")
 #define ComponentStagingDir     "@CPACK_TEMPORARY_INSTALL_DIRECTORY@"
 #define DebugSdkStagingDir      StringChange(ComponentStagingDir, "/complete/", "/sdk/")
-#define CSharpStagingDir        StringChange(ComponentStagingDir, "/complete/", "/csharp/")
+#define CSharpStagingDir        StringChange(StringChange(ComponentStagingDir, "/complete/", "/csharp/"), "/eCAL-", "/ecal_csharp-")
 #define OutputDir               "@CPACK_PACKAGE_DIRECTORY@/@CPACK_OUTPUT_FILE_PREFIX@"
 #define LicenseFile             "@CPACK_RESOURCE_FILE_LICENSE@"
 

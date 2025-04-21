@@ -18,7 +18,13 @@
 
 # C# build, can be executed standalone against an eCAL installation
 cmake_minimum_required(VERSION 3.15)
-project(ecal_csharp)
+
+find_package(CMakeFunctions REQUIRED)
+git_revision_information()
+
+project(ecal_csharp
+  VERSION "${GIT_REVISION_MAJOR}.${GIT_REVISION_MINOR}.${GIT_REVISION_PATCH}"
+)
 
 include(GNUInstallDirs)
 
