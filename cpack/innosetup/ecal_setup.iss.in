@@ -109,8 +109,6 @@ Source: "{#DebugSdkStagingDir}\app\*";                DestDir: "{app}";         
 ;Source: "{#DebugSdkStagingDir}\headers\*";           DestDir: "{app}";                   Flags: ignoreversion recursesubdirs;     Components: sdk\ecal
 Source: "{#DebugSdkStagingDir}\sdk\*";                DestDir: "{app}";                   Flags: ignoreversion recursesubdirs;     Components: sdk\ecal
 
-Source: "{#CSharpStagingDir}\sdk\*";                  DestDir: "{app}";                   Flags: ignoreversion recursesubdirs;     Components: sdk\ecal
-
 ; sdk\protobuf
 Source: "{#ComponentStagingDir}\libprotobuf\*";       DestDir: "{app}";                   Flags: ignoreversion recursesubdirs;     Components: sdk\protobuf
 Source: "{#ComponentStagingDir}\libprotobuf-lite\*";  DestDir: "{app}";                   Flags: ignoreversion recursesubdirs;     Components: sdk\protobuf
